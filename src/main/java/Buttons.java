@@ -3,11 +3,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Buttons {
     private static final String tag = "button[type],input,a,span,div,img,svg";
 
     public static String findButton(String url, String nameButton) throws IOException {
+        ArrayList<String> buttons = new ArrayList<>();
         // Получения body страницы
         Element body = Jsoup.connect(url).get().body();
 
@@ -23,7 +25,7 @@ public class Buttons {
 
         // Выбор списка тегов
         Elements buttonsType = elementsButton.select(tag);
-        System.out.println("Кнопок с тегом '" + tag + "': " + buttonsType.size());
+        System.out.println("Кнопок с тегами '" + tag + "': " + buttonsType.size());
 
         // Перебор кнопок
         if (!buttonsType.isEmpty()) {
@@ -31,15 +33,15 @@ public class Buttons {
                 // Удаление всех дочерних элементов
                 button.children().remove();
 
-                // Поиск элемента по тексту
+                // Поиск элемента
                 if (button.text().replace("&nbsp;", " ").contains(nameButton) ||
                         button.toString().replace("&nbsp;", " ").contains(nameButton)) {
-                    return button.toString();
+                    buttons.add(button + "|||"); // ||| - необходим для разделения элементов между собой
                 }
             }
         } else {
-            return "Список кнопок пуст!";
+            return "По набору тегов '" + tag + "' ничего не найдено!";
         }
-        return "По набору тегов '" + tag + "' ничего не найдено!";
+        return buttons.toString();
     }
 }
