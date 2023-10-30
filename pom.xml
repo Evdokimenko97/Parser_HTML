@@ -19,6 +19,13 @@
             <artifactId>jsoup</artifactId>
             <version>1.16.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.codeborne</groupId>
+            <artifactId>selenide</artifactId>
+            <version>6.18.0</version>
+        </dependency>
+
     </dependencies>
 
 </project>

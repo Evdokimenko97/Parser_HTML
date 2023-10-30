@@ -1,17 +1,13 @@
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Buttons {
-    private static final String tag = "button[type],input,a,span,div,img,svg";
+    private static final String tags = "button[type],input,a,span,div,img,svg";
 
-    public static String findButton(String url, String nameButton) throws IOException {
-        ArrayList<String> buttons = new ArrayList<>();
-        // Получения body страницы
-        Element body = Jsoup.connect(url).get().body();
+    public static String findButton(Element body, String nameButton) {
+        ArrayList<String> buttons = new ArrayList<>(); // Список найденных кнопок с атрибутами
 
         if (nameButton.isEmpty()) {
             return "Отсутствует название кнопки!";
@@ -24,8 +20,8 @@ public class Buttons {
         System.out.println("Общее количество элементов имеющих функцию onClick и border: " + elementsButton.size());
 
         // Выбор списка тегов
-        Elements buttonsType = elementsButton.select(tag);
-        System.out.println("Кнопок с тегами '" + tag + "': " + buttonsType.size());
+        Elements buttonsType = elementsButton.select(tags);
+        System.out.println("Количество кнопок с тегами '" + tags + "': " + buttonsType.size());
 
         // Перебор кнопок
         if (!buttonsType.isEmpty()) {
@@ -33,15 +29,15 @@ public class Buttons {
                 // Удаление всех дочерних элементов
                 button.children().remove();
 
-                // Поиск элемента
-                if (button.text().replace("&nbsp;", " ").contains(nameButton) ||
-                        button.toString().replace("&nbsp;", " ").contains(nameButton)) {
-                    buttons.add(button + "|||"); // ||| - необходим для разделения элементов между собой
+                // Поиск элемента по тексту и по всем атрибутама элемента содержащим текст 'nameButton'
+                if (button.text().equals(nameButton) || button.toString().contains(nameButton)) {
+                    buttons.add(button + "\n"); // ||| - необходим для дальнейшего разделения элементов между собой
                 }
             }
         } else {
-            return "По набору тегов '" + tag + "' ничего не найдено!";
+            return "По набору тегов '" + tags + "' кнопки не найдены!";
         }
+        System.out.println("Количество найденных кнопок: " + buttons.size());
         return buttons.toString();
     }
 }
