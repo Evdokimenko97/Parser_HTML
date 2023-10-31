@@ -1,5 +1,8 @@
+package utils;
+
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -15,11 +18,18 @@ public class Browser {
         options.addArguments("--remote-allow-origins=*");
         Configuration.browserCapabilities = new DesiredCapabilities();
         Configuration.browserCapabilities.setCapability(ChromeOptions.CAPABILITY, options);
-        Configuration.pageLoadStrategy = "eager";
+        Configuration.timeout = 5000; // 5 секунд
 
+        try {
+            // Открытие страницы
+            Selenide.open(url);
+        } catch (TimeoutException e) {
+            // Очистка кэша и перезагрузка страницы при долгом ожидании открытия страницы
+            Selenide.clearBrowserLocalStorage();
+            Selenide.refresh();
+            Thread.sleep(2000);
+        }
 
-        // Открытие страницы
-        Selenide.open(url);
         // Ожидание появления элемента на странице
         getWebDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         // Открытие браузера в полноэкранном режиме
