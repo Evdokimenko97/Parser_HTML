@@ -24,16 +24,16 @@ import java.time.LocalTime;
 
 public class Classifier {
 
-    private static final int labelIndex = 4; // Указываем индекс столбца с метками классов в данных
-    private static final int numClasses = 3; // Указываем количество классов
+    private static final int labelIndex = 4; // Указываем индекс столбца с метками классов в данных (Начинается с 0)
+    private static final int numClasses = 4; // Указываем количество классов
     private static final int batchSize = 150; // Указываем размер пакета данных для обучения
 
     private static final int numInputs = 4;  // Указываем количество входных параметров модели
-    private static final int outputNum = 3;  // Указываем количество выходных классов
+    private static final int outputNum = 4;  // Указываем количество выходных классов
     private static final long seed = 6;  // Указываем начальное значение для генерации случайных чисел
     private static final int epochCount = 1000;  // Указываем количество эпох
-    private static final String trainFile = "src/main/resources/iris-train.csv"; // Тренировочные данные
-    private static final String testFile = "src/main/resources/irisTest.csv"; // Тестовые данные
+    private static final String trainFile = "src/main/resources/button_data.csv"; // Тренировочные данные
+    private static final String testFile = "src/main/resources/button_data2.csv"; // Тестовые данные
 
 
     public static void main(String[] args) throws Exception {  // Объявляем точку входа программы
@@ -62,11 +62,11 @@ public class Classifier {
                 .updater(new Sgd(0.1))  // Указываем метод оптимизации (стохастический градиентный спуск) и скорость обучения
                 .l2(1e-4)  // Указываем коэффициент регуляризации L2
                 .list()  // Создаем список слоев
-                .layer(new DenseLayer.Builder().nIn(numInputs).nOut(3).build())  // Добавляем плотный (полносвязанный) слой
-                .layer(new DenseLayer.Builder().nIn(3).nOut(3).build())  // Добавляем второй плотный слой
+                .layer(new DenseLayer.Builder().nIn(numInputs).nOut(4).build())  // Добавляем плотный (полносвязанный) слой
+                .layer(new DenseLayer.Builder().nIn(4).nOut(4).build())  // Добавляем второй плотный слой
                 .layer(new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)  // Добавляем выходной слой
                         .activation(Activation.SOFTMAX)  // Указываем функцию активации для выходного слоя
-                        .nIn(3).nOut(outputNum).build())  // Указываем количество входных и выходных узлов
+                        .nIn(4).nOut(outputNum).build())  // Указываем количество входных и выходных узлов
                 .build();  // Строим конфигурацию
 
         sb.append("Создание многослойной нейронной сети: ").append(LocalTime.now().withNano(0)).append("\n");
@@ -89,11 +89,10 @@ public class Classifier {
 
         sb.append("Результаты: ").append(LocalTime.now().withNano(0)).append("\n");
         INDArray newOutput = model.output(newData.getFeatures());  // Получаем предсказания модели на новых данных
-        Evaluation newEval = new Evaluation(3);  // Создаем объект для оценки результатов на новых данных
+        Evaluation newEval = new Evaluation(numClasses);  // Создаем объект для оценки результатов на новых данных
         newEval.eval(newData.getLabels(), newOutput);  // Оцениваем результаты классификации на новых данных
 
         System.out.println(newEval.stats()); // Выводим в консоль информацию о результатах на новых данных
-
-        System.out.println(sb); // Выводим в консоль времени выполнения задач
+        System.out.println(sb); // Выводим в консоль время выполнения задач
     }
 }
