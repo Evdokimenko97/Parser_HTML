@@ -33,10 +33,10 @@ public class ElementCategories {
         String[] tags = {"div", "button", "input", "a", "span", "textarea", "label", "img", "svg"};
         for (int i = 0; i < tags.length; i++) {
             if (tags[i].equals(tag)) {
-                return i;
+                return i+1;
             }
         }
-        return 10;
+        return 0;
     }
 
     public int getType() {
@@ -49,10 +49,10 @@ public class ElementCategories {
                 "month", "week"};
         for (int i = 0; i < types.length; i++) {
             if (types[i].equals(type)) {
-                return i;
+                return i+1;
             }
         }
-        return 24;
+        return 0;
     }
 
     public int getCursor() {
@@ -64,10 +64,10 @@ public class ElementCategories {
                 "ne-resize", "e-resize", "se-resize", "s-resize", "sw-resize", "w-resize", "nw-resize"};
         for (int i = 0; i < cursors.length; i++) {
             if (cursors[i].equals(cursor)) {
-                return i;
+                return i+1;
             }
         }
-        return 17;
+        return 0;
     }
 
     public int getBorder() {

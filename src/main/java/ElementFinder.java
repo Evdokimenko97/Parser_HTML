@@ -22,7 +22,7 @@ public class ElementFinder {
         // Собираем список из элементов
         ArrayList<SelenideElement> elements = new ArrayList<>();
         elements.addAll($$(selectorElements));
-//        elements.addAll($$x(selectorDiv));
+        elements.addAll($$x(selectorDiv));
         elements.addAll($$x(selectorSpan));
 
         // Список для хранения данных об элементах
@@ -57,7 +57,7 @@ public class ElementFinder {
     }
 
     private static String getText(SelenideElement element) {
-        String text = element.getText();
+        String text = element.getOwnText();
         String alt = element.getAttribute("alt");
         String title = element.getAttribute("title");
         String value = element.getValue();

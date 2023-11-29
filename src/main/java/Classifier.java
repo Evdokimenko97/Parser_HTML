@@ -25,15 +25,15 @@ import java.time.LocalTime;
 public class Classifier {
 
     private static final int labelIndex = 4; // Указываем индекс столбца с метками классов в данных (Начинается с 0)
-    private static final int numClasses = 4; // Указываем количество классов
+    private static final int numClasses = 3; // Указываем количество классов
     private static final int batchSize = 150; // Указываем размер пакета данных для обучения
 
     private static final int numInputs = 4;  // Указываем количество входных параметров модели
-    private static final int outputNum = 4;  // Указываем количество выходных классов
+    private static final int outputNum = 3;  // Указываем количество выходных классов
     private static final long seed = 6;  // Указываем начальное значение для генерации случайных чисел
     private static final int epochCount = 1000;  // Указываем количество эпох
-    private static final String trainFile = "src/main/resources/button_data.csv"; // Тренировочные данные
-    private static final String testFile = "src/main/resources/button_data2.csv"; // Тестовые данные
+    private static final String trainFile = "src/main/resources/iris-train.csv"; // Тренировочные данные
+    private static final String testFile = "src/main/resources/irisTest.csv"; // Тестовые данные
 
 
     public static void main(String[] args) throws Exception {  // Объявляем точку входа программы
@@ -63,10 +63,10 @@ public class Classifier {
                 .l2(1e-4)  // Указываем коэффициент регуляризации L2
                 .list()  // Создаем список слоев
                 .layer(new DenseLayer.Builder().nIn(numInputs).nOut(4).build())  // Добавляем плотный (полносвязанный) слой
-                .layer(new DenseLayer.Builder().nIn(4).nOut(4).build())  // Добавляем второй плотный слой
+                .layer(new DenseLayer.Builder().nIn(4).nOut(3).build())  // Добавляем второй плотный слой
                 .layer(new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)  // Добавляем выходной слой
                         .activation(Activation.SOFTMAX)  // Указываем функцию активации для выходного слоя
-                        .nIn(4).nOut(outputNum).build())  // Указываем количество входных и выходных узлов
+                        .nIn(3).nOut(outputNum).build())  // Указываем количество входных и выходных узлов
                 .build();  // Строим конфигурацию
 
         sb.append("Создание многослойной нейронной сети: ").append(LocalTime.now().withNano(0)).append("\n");
