@@ -10,20 +10,20 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class ElementFinder {
 
-    private static final String selectorElements = "button, input, a, textarea, label, img, svg";
-    private static final String selectorDiv = "//div[text()[contains(.,'')]]";
-    private static final String selectorSpan= "//span[text()[contains(.,'')]]";
+    private static final String selectorElements = "div, button, input, a, span, img, svg, li, textarea, label, td.label";
 
     public static void main(String[] args) throws IOException, InterruptedException {
         System.out.println("Начало: " + LocalTime.now().withNano(0));
         // Открытие страницы
-        Browser.openBrowser("https://blog.dunin.ru/2019/12/05/%D1%81%D0%BF%D0%B8%D1%81%D0%BE%D0%BA-%D0%B4%D0%B5%D0%BC%D0%BE-%D1%81%D0%B0%D0%B9%D1%82%D0%BE%D0%B2-%D0%B4%D0%BB%D1%8F-%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA%D0%BE%D0%B2/");
+//        Browser.openBrowser("https://blog.dunin.ru/2019/12/05/%D1%81%D0%BF%D0%B8%D1%81%D0%BE%D0%BA-%D0%B4%D0%B5%D0%BC%D0%BE-%D1%81%D0%B0%D0%B9%D1%82%D0%BE%D0%B2-%D0%B4%D0%BB%D1%8F-%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA%D0%BE%D0%B2/");
+//        Browser.openBrowser("https://forms.app/auth/signup");
+//        Browser.openBrowser("https://internetopros.ru/account/register");
+//        Browser.openBrowser("https://www.survio.com/shablon-oprosa/udovletvorennost-zakazchika-obratnaya-svyaz-ot-zakazchika");
+        Browser.openBrowser("https://pos.gosuslugi.ru/lkp/polls/341592/");
 
         // Собираем список из элементов
         ArrayList<SelenideElement> elements = new ArrayList<>();
         elements.addAll($$(selectorElements));
-        elements.addAll($$x(selectorDiv));
-        elements.addAll($$x(selectorSpan));
 
         // Список для хранения данных об элементах
         List<ElementCategories> elementsData = new ArrayList<>();
@@ -35,7 +35,7 @@ public class ElementFinder {
                 int tagName = categories.setTag(element.getTagName());
                 int type = categories.setType(element.getAttribute("type"));
                 int cursor = categories.setCursor(element.getCssValue("cursor"));
-                int placeholder = categories.setPlaceholder(element.getAttribute("placeholder") != null);
+                int placeholder = categories.setPlaceholder(element.getAttribute("placeholder") != null && !element.getAttribute("placeholder").equals(""));
 
                 // Записываем текст элемента в коллекцию
                 String textElement;

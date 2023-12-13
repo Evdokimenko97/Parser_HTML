@@ -30,7 +30,7 @@ public class ElementCategories {
     }
 
     public int setTag(String tag) {
-        String[] tags = {"div", "button", "input", "a", "span", "textarea", "label", "img", "svg"};
+        String[] tags = {"div", "button", "input", "a", "span", "textarea", "label", "img", "svg", "p", "td", "h2", "b", "li"};
         for (int i = 0; i < tags.length; i++) {
             if (tags[i].equals(tag)) {
                 return i+1;
